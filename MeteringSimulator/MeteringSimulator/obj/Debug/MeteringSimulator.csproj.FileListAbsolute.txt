@@ -1,0 +1,32 @@
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.exe.config
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.exe
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.pdb
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.AssemblyReference.cache
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MainWindow.g.cs
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\App.g.cs
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator_MarkupCompile.cache
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator_MarkupCompile.lref
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\App.baml
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MainWindow.baml
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.g.resources
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.Properties.Resources.resources
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.GenerateResource.cache
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.CoreCompileInputs.cache
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.exe
+D:\!FTN\!HCI VEZBE\2023-24\PZ2\Visual Studio\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.pdb
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.exe.config
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.exe
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\bin\Debug\MeteringSimulator.pdb
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.AssemblyReference.cache
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MainWindow.g.cs
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\App.g.cs
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator_MarkupCompile.cache
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator_MarkupCompile.lref
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\App.baml
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MainWindow.baml
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.g.resources
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.Properties.Resources.resources
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.GenerateResource.cache
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.csproj.CoreCompileInputs.cache
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.exe
+E:\Projects\hci\MeteringSimulator\MeteringSimulator\obj\Debug\MeteringSimulator.pdb

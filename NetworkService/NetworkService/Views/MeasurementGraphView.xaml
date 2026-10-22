@@ -1,0 +1,80 @@
+<UserControl x:Class="NetworkService.Views.MeasurementGraphView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="640"
+             DataContextChanged="OnDataContextChanged" Loaded="OnLoaded">
+    <StackPanel>
+        
+        <Border Style="{StaticResource Card}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Izaberi entitet:" VerticalAlignment="Center" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextDarkBrush}" Margin="0,0,10,0"/>
+                <ComboBox Width="240" Height="32" FontSize="14"
+                          ItemsSource="{Binding Entities}" SelectedItem="{Binding SelectedEntity}"
+                          ToolTip="Izaberite put za koji se prikazuje istorija merenja">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Name}"/><Run Text=" — "/><Run Text="{Binding Type.Name}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock VerticalAlignment="Center" Margin="16,0,0,0" Foreground="{StaticResource TextMutedBrush}" FontSize="12"
+                           Text="Grafikon prikazuje poslednjih 5 merenja (osvežava se u realnom vremenu)."/>
+            </StackPanel>
+        </Border>
+
+        
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="GRAFIKON — poslednjih 5 merenja (G2: barovi po vremenu)" Style="{StaticResource SectionTitle}"/>
+                <Canvas x:Name="GraphCanvas" Height="320" Background="White" SizeChanged="OnGraphSizeChanged"/>
+                <StackPanel Orientation="Horizontal" Margin="40,8,0,0">
+                    <Rectangle Width="12" Height="12" Fill="#2EA05A" VerticalAlignment="Center"/>
+                    <TextBlock Text="validno" Margin="5,0,18,0" VerticalAlignment="Center" FontSize="12"/>
+                    <Rectangle Width="12" Height="12" Fill="#D64545" VerticalAlignment="Center"/>
+                    <TextBlock Text="van opsega (nevalidno)" Margin="5,0,18,0" VerticalAlignment="Center" FontSize="12"/>
+                    <Rectangle Width="18" Height="2" Fill="#888888" VerticalAlignment="Center"/>
+                    <TextBlock Text="granica validnosti" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="12"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="RASPODELA TIPOVA ENTITETA (CG4)" Style="{StaticResource SectionTitle}"/>
+                <Canvas x:Name="DistributionCanvas" Height="56" Background="White" SizeChanged="OnGraphSizeChanged"/>
+                <ItemsControl ItemsSource="{Binding TypeDistribution}" Margin="0,8,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,18,0">
+                                <Rectangle Width="12" Height="12" VerticalAlignment="Center">
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="Fill" Value="#367ECC"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding TypeName}" Value="IB">
+                                                    <Setter Property="Fill" Value="#7FB2E8"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
+                                <TextBlock VerticalAlignment="Center" Margin="5,0,0,0" FontSize="12">
+                                    <Run Text="{Binding TypeName}"/><Run Text=" putevi: "/><Run Text="{Binding Count}"/><Run Text=" ("/><Run Text="{Binding Percentage, StringFormat={}{0:0}}"/><Run Text="%)"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

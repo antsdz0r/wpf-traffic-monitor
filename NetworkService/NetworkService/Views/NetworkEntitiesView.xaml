@@ -1,0 +1,208 @@
+<UserControl x:Class="NetworkService.Views.NetworkEntitiesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="640">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="DODAVANJE NOVOG ENTITETA (PUTA)" Style="{StaticResource SectionTitle}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="ID" Style="{StaticResource FieldLabel}"/>
+                                <TextBox x:Name="IdBox" Style="{StaticResource InputBox}"
+                                         ToolTip="Jedinstven ceo broj veći od nule"
+                                         Text="{Binding NewIdText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBlock Style="{StaticResource ErrorText}"
+                                           Text="{Binding ElementName=IdBox, Path=(Validation.Errors)/ErrorContent}"/>
+                            </StackPanel>
+
+                            
+                            <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                                <TextBlock Text="Naziv" Style="{StaticResource FieldLabel}"/>
+                                <TextBox x:Name="NameBox" Style="{StaticResource InputBox}"
+                                         ToolTip="Naziv puta, npr. Put A1"
+                                         Text="{Binding NewName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBlock Style="{StaticResource ErrorText}"
+                                           Text="{Binding ElementName=NameBox, Path=(Validation.Errors)/ErrorContent}"/>
+                            </StackPanel>
+
+                            
+                            <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                                <TextBlock Text="Tip" Style="{StaticResource FieldLabel}"/>
+                                <ComboBox x:Name="TypeBox" Height="32" FontSize="14"
+                                          ToolTip="Tip puta: IA (do 15000) ili IB (do 7000)"
+                                          ItemsSource="{Binding Types}" DisplayMemberPath="Name"
+                                          SelectedItem="{Binding NewType, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                <TextBlock Style="{StaticResource ErrorText}"
+                                           Text="{Binding ElementName=TypeBox, Path=(Validation.Errors)/ErrorContent}"/>
+                            </StackPanel>
+
+                            
+                            <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,18,0,0">
+                                <Button Content="Dodaj" Style="{StaticResource PrimaryButton}" Command="{Binding AddCommand}"
+                                        ToolTip="Dodaj novi entitet u sistem"/>
+                                <Button Content="Otkaži" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                                        Command="{Binding CancelAddCommand}" ToolTip="Očisti formu"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="PRETRAGA" Style="{StaticResource SectionTitle}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton Content="Naziv" GroupName="Search" VerticalAlignment="Center" Margin="0,0,14,0"
+                                         IsChecked="{Binding SearchByName}"/>
+                            <RadioButton Content="Tip" GroupName="Search" VerticalAlignment="Center" Margin="0,0,14,0"
+                                         IsChecked="{Binding SearchByType}"/>
+                            <TextBox Width="360" Style="{StaticResource InputBox}"
+                                     ToolTip="Unesite deo naziva ili tipa za pretragu"
+                                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Poništi pretragu" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                                    Command="{Binding ResetSearchCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="FILTER" Style="{StaticResource SectionTitle}"/>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="Tip entiteta" Style="{StaticResource FieldLabel}"/>
+                                <ComboBox Width="130" Height="30" ItemsSource="{Binding Types}" DisplayMemberPath="Name"
+                                          SelectedItem="{Binding FilterType}" ToolTip="Filtriraj po tipu puta"/>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="ID uslov" Style="{StaticResource FieldLabel}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="&lt;" GroupName="IdOp" VerticalAlignment="Center" Margin="0,0,8,0" IsChecked="{Binding IdLess}"/>
+                                    <RadioButton Content="&gt;" GroupName="IdOp" VerticalAlignment="Center" Margin="0,0,8,0" IsChecked="{Binding IdGreater}"/>
+                                    <RadioButton Content="=" GroupName="IdOp" VerticalAlignment="Center" Margin="0,0,8,0" IsChecked="{Binding IdEqual}"/>
+                                    <TextBox Width="70" Style="{StaticResource InputBox}" Text="{Binding IdFilterValue, UpdateSourceTrigger=PropertyChanged}"
+                                             ToolTip="Vrednost ID-a za poređenje"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="Opseg vrednosti (CG4)" Style="{StaticResource FieldLabel}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="Van opsega" VerticalAlignment="Center" Margin="0,0,12,0" IsChecked="{Binding ShowOutOfRange}"
+                                              ToolTip="Prikaži entitete čija je vrednost van dozvoljenog opsega"/>
+                                    <CheckBox Content="Unutar opsega" VerticalAlignment="Center" IsChecked="{Binding ShowInRange}"
+                                              ToolTip="Prikaži entitete čija je vrednost unutar dozvoljenog opsega"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                <Button Content="Primeni" Style="{StaticResource PrimaryButton}" Command="{Binding ApplyFilterCommand}"/>
+                                <Button Content="Poništi filter" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                                        Command="{Binding ResetFilterCommand}"/>
+                            </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="ENTITETI POD MONITORINGOM" Style="{StaticResource SectionTitle}"/>
+                            <Button HorizontalAlignment="Right" Content="Obriši selektovano" Style="{StaticResource DangerButton}"
+                                    Command="{Binding DeleteCommand}" ToolTip="Obriši izabrani entitet (potrebna potvrda)"/>
+                        </Grid>
+                        <DataGrid ItemsSource="{Binding EntitiesView}" SelectedItem="{Binding SelectedEntity}"
+                                  AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                                  CanUserAddRows="False" GridLinesVisibility="Horizontal" BorderThickness="1"
+                                  BorderBrush="{StaticResource FieldBorderBrush}" RowHeight="34" FontSize="13"
+                                  Background="White" RowBackground="White" Height="260">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                                <DataGridTextColumn Header="Naziv" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Tip" Binding="{Binding Type.Name}" Width="100"/>
+                                <DataGridTemplateColumn Header="Poslednja vrednost" Width="160">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock VerticalAlignment="Center" Margin="6,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding Value}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasMeasurement}" Value="False">
+                                                                <Setter Property="Text" Value="—"/>
+                                                                <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Status" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0">
+                                                <Ellipse Width="11" Height="11" VerticalAlignment="Center"
+                                                         Fill="{Binding IsValid, Converter={StaticResource ValidityToBrush}}"/>
+                                                <TextBlock VerticalAlignment="Center" Margin="6,0,0,0" FontSize="12">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="Validno"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsValid}" Value="False">
+                                                                    <Setter Property="Text" Value="Van opsega"/>
+                                                                    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding HasMeasurement}" Value="False">
+                                                                    <Setter Property="Text" Value="Nema merenja"/>
+                                                                    <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        
+        <Grid Background="#99000000" Visibility="{Binding IsConfirmDeleteVisible, Converter={StaticResource BoolToVis}}">
+            <Border Background="White" CornerRadius="10" Padding="24" Width="380"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Potvrda brisanja" FontWeight="Bold" FontSize="16" Foreground="{StaticResource TextDarkBrush}"/>
+                    <TextBlock Text="{Binding ConfirmDeleteMessage}" TextWrapping="Wrap" Margin="0,10,0,18"
+                               Foreground="{StaticResource TextMutedBrush}" FontSize="13"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Odustani" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                                Command="{Binding CancelDeleteCommand}"/>
+                        <Button Content="Obriši" Style="{StaticResource DangerButton}" Command="{Binding ConfirmDeleteCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

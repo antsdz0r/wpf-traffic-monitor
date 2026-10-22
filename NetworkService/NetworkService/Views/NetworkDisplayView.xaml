@@ -1,0 +1,140 @@
+<UserControl x:Class="NetworkService.Views.NetworkDisplayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="640"
+             DataContextChanged="OnDataContextChanged" Loaded="OnLoaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        
+        <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,12,0">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="ENTITETI (po tipu)" Style="{StaticResource SectionTitle}"/>
+                <TextBlock DockPanel.Dock="Top" Foreground="{StaticResource TextMutedBrush}" FontSize="11" TextWrapping="Wrap"
+                           Margin="0,0,0,8" Text="Prevucite entitet na mrežu. Dvoklik na mreži ga vraća ovde."/>
+                <TreeView x:Name="EntitiesTree" ItemsSource="{Binding TreeGroups}" BorderThickness="0"
+                          PreviewMouseLeftButtonDown="Tree_PreviewMouseLeftButtonDown"
+                          PreviewMouseMove="Tree_PreviewMouseMove">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Items}">
+                            <TextBlock Text="{Binding Header}" FontWeight="Bold" Foreground="{StaticResource TextDarkBrush}"/>
+                            <HierarchicalDataTemplate.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="2" Background="Transparent"
+                                                ToolTip="Prevucite na Drag&amp;Drop mrežu">
+                                        <Image Source="{Binding Type.Name, Converter={StaticResource TypeNameToImage}}" Width="22" Height="22" Margin="0,0,6,0"/>
+                                        <TextBlock VerticalAlignment="Center" Foreground="{StaticResource TextDarkBrush}">
+                                            <Run Text="{Binding Name}"/><Run Text=" (ID: "/><Run Text="{Binding Id}"/><Run Text=")"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </HierarchicalDataTemplate.ItemTemplate>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </DockPanel>
+        </Border>
+
+        
+        <Border Grid.Column="1" Style="{StaticResource Card}">
+            <DockPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="⊞ Rasporedi sve" Style="{StaticResource PrimaryButton}" Command="{Binding ArrangeAllCommand}"
+                            ToolTip="Rasporedi sve izlistane entitete na slobodna polja"/>
+                    <ToggleButton x:Name="ConnectToggle" Content="🔗 Poveži" Margin="4" Padding="14,8" Cursor="Hand"
+                                  IsChecked="{Binding IsConnectMode}" FontWeight="SemiBold"
+                                  ToolTip="Uključi režim povezivanja: kliknite dva entiteta da ih povežete linijom"/>
+                    <Button Content="↶ Undo" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                            Command="{Binding UndoCommand}" ToolTip="Poništi poslednju akciju"/>
+                    <Button Content="↶↶ Undo sve" Style="{StaticResource GhostButton}" Foreground="{StaticResource TextDarkBrush}"
+                            Command="{Binding UndoAllCommand}" ToolTip="Poništi sve akcije"/>
+                    <TextBlock Text="{Binding ConnectHint}" Foreground="{StaticResource AccentBrush}" FontSize="12"
+                               VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+
+                
+                <Grid>
+                    <ItemsControl x:Name="SlotsHost" ItemsSource="{Binding Slots}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="3" Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="6" CornerRadius="8" BorderThickness="2" AllowDrop="True"
+                                        Background="#F7F9FC" Drop="Slot_Drop" DragOver="Slot_DragOver"
+                                        PreviewMouseMove="Slot_PreviewMouseMove"
+                                        MouseLeftButtonUp="Slot_MouseLeftButtonUp"
+                                        MouseLeftButtonDown="Slot_MouseLeftButtonDown">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="BorderBrush" Value="{StaticResource FieldBorderBrush}"/>
+                                            <Style.Triggers>
+                                                
+                                                <DataTrigger Binding="{Binding IsOccupied}" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{Binding Entity.IsValid, Converter={StaticResource ValidityToBrush}}"/>
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid>
+                                        <!-- Prazno polje -->
+                                        <TextBlock Text="[ prazno ]" Foreground="#B6BFCC" FontSize="12"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVis}}"/>
+
+                                        
+                                        <StackPanel Visibility="{Binding IsOccupied, Converter={StaticResource BoolToVis}}"
+                                                    Margin="6" VerticalAlignment="Center">
+                                            <Grid>
+                                                <Image Source="{Binding Entity.Type.Name, Converter={StaticResource TypeNameToImage}}" Width="42" Height="42" HorizontalAlignment="Center"/>
+                                                <Image Width="18" Height="18" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                       Source="{Binding Entity.IsValid, Converter={StaticResource ValidityToStatusImage}}"
+                                                       Visibility="{Binding Entity.HasMeasurement, Converter={StaticResource BoolToVis}}"/>
+                                            </Grid>
+                                            <TextBlock Text="{Binding Entity.Name}" FontWeight="Bold" FontSize="13"
+                                                       HorizontalAlignment="Center" Foreground="{StaticResource TextDarkBrush}" Margin="0,4,0,0"/>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="11" Foreground="{StaticResource TextMutedBrush}">
+                                                <Run Text="ID: "/><Run Text="{Binding Entity.Id}"/>
+                                            </TextBlock>
+                                            <TextBlock HorizontalAlignment="Center" FontSize="12" Margin="0,2,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{StaticResource TextDarkBrush}"/>
+                                                        <Setter Property="Text" Value="{Binding Entity.Value, StringFormat=Vrednost: {0}}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Entity.HasMeasurement}" Value="False">
+                                                                <Setter Property="Text" Value="Nema merenja"/>
+                                                                <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Entity.IsValid}" Value="False">
+                                                                <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+                                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    
+                    <Canvas x:Name="LinesCanvas" IsHitTestVisible="False" SizeChanged="OnCanvasSizeChanged"/>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
